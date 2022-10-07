@@ -3,10 +3,96 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <modules>
+        <module>mall-start</module>
+    </modules>
 
-    <groupId>com,cmcorg</groupId>
+    <parent>
+        <artifactId>engine-web-v1</artifactId>
+        <groupId>com.cmcorg</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
     <artifactId>service-mall-v1</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <description>项目顶级 pom.xml，目的：1 方便打包modules 2 依赖版本控制（所以不要在其他 pom.xml里面，添加带有 version标签的依赖）</description>
 
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- 服务-基础引擎-web-v1 ↓ -->
+
+            <!-- web-user -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>web-user</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- web-dict -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>web-dict</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- web-param -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>web-param</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- web-sign-email -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>web-sign-email</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- web-sign-signinname -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>web-sign-signinname</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- web-sign-helper -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>web-sign-helper</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- web-role -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>web-role</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- web-menu -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>web-menu</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- 服务-基础引擎-web-v1 ↑ -->
+
+            <!-- 其他依赖 ↓ -->
+
+            <!-- generate-page-h5 -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>generate-page-h5</artifactId>
+                <version>${project.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- 其他依赖 ↑ -->
+
+        </dependencies>
+    </dependencyManagement>
 
 </project>
