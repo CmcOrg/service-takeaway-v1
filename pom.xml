@@ -14,7 +14,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>service-mall-v1</artifactId>
+    <artifactId>service-engine-mall-v1</artifactId>
     <description>项目顶级 pom.xml，目的：1 方便打包modules 2 依赖版本控制（所以不要在其他 pom.xml里面，添加带有 version标签的依赖）</description>
 
     <dependencyManagement>
