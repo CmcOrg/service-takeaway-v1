@@ -11,15 +11,47 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>service-engine-mall-v1</artifactId>
+    <artifactId>service-engine-takeaway-v1</artifactId>
     <description>项目顶级 pom.xml，目的：1 方便打包modules 2 依赖版本控制（所以不要在其他 pom.xml里面，添加带有 version标签的依赖）</description>
 
     <modules>
-        <module>mall-start</module>
+        <module>takeaway-start</module>
+        <module>takeaway-product</module>
+        <module>takeaway-address-delivery</module>
+        <module>takeaway-rider</module>
+        <module>takeaway-order</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
+
+            <!-- takeaway-order -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>takeaway-order</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- takeaway-rider -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>takeaway-rider</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- takeaway-address-delivery -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>takeaway-address-delivery</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- takeaway-product -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>takeaway-product</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <!-- 服务-基础引擎-web-v1 ↓ -->
 
