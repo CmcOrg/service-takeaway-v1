@@ -8,7 +8,7 @@ spring:
     nacos:
       server-addr: 121.36.195.98:8848
       config:
-        namespace: mall
+        namespace: takeaway
         file-extension: yaml
         extension-configs:
           - data-id: service-engine-takeaway-v1.yml
