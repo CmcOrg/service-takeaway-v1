@@ -44,7 +44,7 @@ public class TakeawayCategoryServiceImpl extends ServiceImpl<TakeawayCategoryMap
         takeawayCategoryDO.setDelFlag(false);
         takeawayCategoryDO.setRemark(MyEntityUtil.getNotNullStr(dto.getRemark()));
 
-        save(takeawayCategoryDO);
+        saveOrUpdate(takeawayCategoryDO);
 
         return BaseBizCodeEnum.OK;
     }
