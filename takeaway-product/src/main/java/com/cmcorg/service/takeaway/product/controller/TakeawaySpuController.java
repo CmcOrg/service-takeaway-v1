@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
-@WebPage(type = PageTypeEnum.ADMIN, title = "商品 Spu")
+@WebPage(type = PageTypeEnum.ADMIN, title = "商品SPU")
 @RequestMapping("/takeaway/spu")
 @RestController
-@Tag(name = "商品 Spu-管理")
+@Tag(name = "商品SPU-管理")
 public class TakeawaySpuController {
 
     @Resource

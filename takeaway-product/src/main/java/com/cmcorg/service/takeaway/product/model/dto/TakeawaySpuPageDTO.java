@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class TakeawaySpuPageDTO extends MyPageDTO {
 
-    @Schema(description = "SPU 名称")
+    @Schema(description = "SPU名称")
     private String name;
 
     @Schema(description = "场景：1 堂食 2 外卖")

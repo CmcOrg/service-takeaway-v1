@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
 @Schema(description = "主表：商品 SPU")
 public class TakeawaySpuDO extends BaseEntity {
 
-    @Schema(description = "SPU 名称")
+    @Schema(description = "SPU名称")
     private String name;
 
     @RequestField(formTitle = "场景")

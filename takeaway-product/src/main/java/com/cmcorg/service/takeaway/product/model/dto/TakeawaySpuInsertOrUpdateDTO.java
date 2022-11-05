@@ -15,8 +15,8 @@ import javax.validation.constraints.NotNull;
 public class TakeawaySpuInsertOrUpdateDTO extends BaseInsertOrUpdateDTO {
 
     @NotBlank
-    @RequestField(formTitle = "名称", formTooltip = "例如：招牌芋圆奶茶")
-    @Schema(description = "SPU 名称")
+    @RequestField(formTitle = "SPU名称", formTooltip = "例如：招牌芋圆奶茶")
+    @Schema(description = "SPU名称")
     private String name;
 
     @NotNull
