@@ -23,6 +23,10 @@ public class TakeawayCategoryInsertOrUpdateDTO extends BaseInsertOrUpdateDTO {
     @Schema(description = "场景：1 堂食 2 外卖")
     private TakeawaySceneEnum scene;
 
+    @RequestField(formTitle = "排序号", hideInSearchFlag = true)
+    @Schema(description = "排序号（值越大越前面，默认为 0）")
+    private Integer orderNo;
+
     @Schema(description = "是否启用")
     private Boolean enableFlag;
 

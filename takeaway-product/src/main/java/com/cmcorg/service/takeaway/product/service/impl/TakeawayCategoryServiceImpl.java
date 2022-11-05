@@ -39,6 +39,7 @@ public class TakeawayCategoryServiceImpl extends ServiceImpl<TakeawayCategoryMap
         TakeawayCategoryDO takeawayCategoryDO = new TakeawayCategoryDO();
         takeawayCategoryDO.setName(dto.getName());
         takeawayCategoryDO.setScene(dto.getScene());
+        takeawayCategoryDO.setOrderNo(MyEntityUtil.getNotNullOrderNo(dto.getOrderNo()));
         takeawayCategoryDO.setId(dto.getId());
         takeawayCategoryDO.setEnableFlag(BooleanUtil.isTrue(dto.getEnableFlag()));
         takeawayCategoryDO.setDelFlag(false);
