@@ -14,6 +14,30 @@
 
     <dependencies>
 
+        <!-- takeaway-order -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>takeaway-order</artifactId>
+        </dependency>
+
+        <!-- takeaway-rider -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>takeaway-rider</artifactId>
+        </dependency>
+
+        <!-- takeaway-address-delivery -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>takeaway-address-delivery</artifactId>
+        </dependency>
+
+        <!-- takeaway-product -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>takeaway-product</artifactId>
+        </dependency>
+
         <!-- 服务-基础引擎-web-v1 ↓ -->
 
         <!-- web-user -->
