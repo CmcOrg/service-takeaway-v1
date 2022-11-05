@@ -8,7 +8,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -37,5 +39,12 @@ public class TakeawaySpuInsertOrUpdateDTO extends BaseInsertOrUpdateDTO {
 
     @Schema(description = "备注")
     private String remark;
+
+    @Schema(description = "商品分类主键 idSet")
+    private Set<Long> categoryIdSet;
+
+    @NotEmpty
+    @Schema(description = "规格 json对象集合字符串 set")
+    private Set<String> specJsonListStrSet;
 
 }

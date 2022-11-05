@@ -9,6 +9,7 @@ import com.cmcorg.engine.web.model.model.dto.NotNullId;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuInsertOrUpdateDTO;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuPageDTO;
 import com.cmcorg.service.takeaway.product.model.entity.TakeawaySpuDO;
+import com.cmcorg.service.takeaway.product.model.vo.TakeawaySpuInfoByIdVO;
 import com.cmcorg.service.takeaway.product.service.TakeawaySpuService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -47,7 +48,7 @@ public class TakeawaySpuController {
     @Operation(summary = "通过主键id，查看详情")
     @PostMapping("/infoById")
     @PreAuthorize("hasAuthority('takeawaySpu:infoById')")
-    public ApiResultVO<TakeawaySpuDO> infoById(@RequestBody @Valid NotNullId notNullId) {
+    public ApiResultVO<TakeawaySpuInfoByIdVO> infoById(@RequestBody @Valid NotNullId notNullId) {
         return ApiResultVO.ok(baseService.infoById(notNullId));
     }
 
