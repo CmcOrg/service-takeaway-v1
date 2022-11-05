@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 
 @RequestClass(tableIgnoreFields = WebModelConstant.TABLE_IGNORE_FIELDS_TWO)
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "mall_spec")
+@TableName(value = "takeaway_spec")
 @Data
 @Schema(description = "主表：商品规格")
 public class TakeawaySpecDO extends BaseEntity {
