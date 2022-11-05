@@ -45,6 +45,8 @@ public class TakeawaySpecServiceImpl extends ServiceImpl<TakeawaySpecMapper, Tak
         takeawaySpecDO.setDelFlag(false);
         takeawaySpecDO.setRemark(MyEntityUtil.getNotNullStr(dto.getRemark()));
 
+        save(takeawaySpecDO);
+
         return BaseBizCodeEnum.OK;
     }
 
