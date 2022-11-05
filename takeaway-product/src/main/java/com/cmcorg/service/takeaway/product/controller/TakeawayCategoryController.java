@@ -45,6 +45,7 @@ public class TakeawayCategoryController {
     }
 
     @Operation(summary = "通过主键id，查看详情")
+    @PostMapping("/infoById")
     @PreAuthorize("hasAuthority('takeawayCategory:infoById')")
     public ApiResultVO<TakeawayCategoryDO> infoById(@RequestBody @Valid NotNullId notNullId) {
         return ApiResultVO.ok(baseService.infoById(notNullId));

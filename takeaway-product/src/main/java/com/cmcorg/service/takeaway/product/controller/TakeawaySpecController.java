@@ -45,6 +45,7 @@ public class TakeawaySpecController {
     }
 
     @Operation(summary = "通过主键id，查看详情")
+    @PostMapping("/infoById")
     @PreAuthorize("hasAuthority('takeawaySpec:infoById')")
     public ApiResultVO<TakeawaySpecDO> infoById(@RequestBody @Valid NotNullId notNullId) {
         return ApiResultVO.ok(baseService.infoById(notNullId));
