@@ -16,6 +16,9 @@ public class TakeawayCategoryPageDTO extends MyPageDTO {
     @Schema(description = "场景：1 堂食 2 外卖")
     private TakeawaySceneEnum scene;
 
+    @Schema(description = "备注")
+    private String remark;
+
     @Schema(description = "是否启用")
     private Boolean enableFlag;
 

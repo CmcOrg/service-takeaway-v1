@@ -58,6 +58,7 @@ public class TakeawayCategoryServiceImpl extends ServiceImpl<TakeawayCategoryMap
 
         return lambdaQuery().like(StrUtil.isNotBlank(dto.getName()), TakeawayCategoryDO::getName, dto.getName())
             .eq(dto.getScene() != null, TakeawayCategoryDO::getScene, dto.getScene())
+            .like(StrUtil.isNotBlank(dto.getRemark()), BaseEntity::getRemark, dto.getRemark())
             .eq(dto.getEnableFlag() != null, BaseEntity::getEnableFlag, dto.getEnableFlag())
             .orderByDesc(TakeawayCategoryDO::getOrderNo).page(dto.getPage(true));
     }
