@@ -3,6 +3,7 @@ package com.cmcorg.service.takeaway.product.model.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.cmcorg.engine.web.auth.model.entity.BaseEntity;
 import com.cmcorg.engine.web.model.generate.model.annotation.RequestClass;
+import com.cmcorg.engine.web.model.generate.model.annotation.RequestField;
 import com.cmcorg.engine.web.model.generate.model.constant.WebModelConstant;
 import com.cmcorg.service.takeaway.product.model.enums.TakeawaySceneEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,6 +20,7 @@ public class TakeawayCategoryDO extends BaseEntity {
     @Schema(description = "分类名称")
     private String name;
 
+    @RequestField(formTitle = "场景")
     @Schema(description = "场景：1 堂食 2 外卖")
     private TakeawaySceneEnum scene;
 

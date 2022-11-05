@@ -1,7 +1,12 @@
 package com.cmcorg.service.takeaway.product.service.impl;
 
+import cn.hutool.core.util.BooleanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.cmcorg.engine.web.auth.exception.BaseBizCodeEnum;
+import com.cmcorg.engine.web.auth.model.entity.BaseEntity;
+import com.cmcorg.engine.web.auth.model.vo.ApiResultVO;
 import com.cmcorg.engine.web.model.model.dto.NotEmptyIdSet;
 import com.cmcorg.engine.web.model.model.dto.NotNullId;
 import com.cmcorg.service.takeaway.product.mapper.TakeawayCategoryMapper;
@@ -20,7 +25,27 @@ public class TakeawayCategoryServiceImpl extends ServiceImpl<TakeawayCategoryMap
      */
     @Override
     public String insertOrUpdate(TakeawayCategoryInsertOrUpdateDTO dto) {
-        return null;
+
+        // 分类名，不能重复
+        boolean exists = lambdaQuery().eq(TakeawayCategoryDO::getName, dto.getName())
+            .eq(TakeawayCategoryDO::getScene, dto.getScene()).ne(dto.getId() != null, BaseEntity::getId, dto.getId())
+            .exists();
+
+        if (exists) {
+            ApiResultVO.error("操作失败：分类名，不能重复");
+        }
+
+        TakeawayCategoryDO takeawayCategoryDO = new TakeawayCategoryDO();
+        takeawayCategoryDO.setName(dto.getName());
+        takeawayCategoryDO.setScene(dto.getScene());
+        takeawayCategoryDO.setId(dto.getId());
+        takeawayCategoryDO.setEnableFlag(BooleanUtil.isTrue(dto.getEnableFlag()));
+        takeawayCategoryDO.setDelFlag(false);
+        takeawayCategoryDO.setRemark("");
+
+        save(takeawayCategoryDO);
+
+        return BaseBizCodeEnum.OK;
     }
 
     /**
@@ -28,7 +53,11 @@ public class TakeawayCategoryServiceImpl extends ServiceImpl<TakeawayCategoryMap
      */
     @Override
     public Page<TakeawayCategoryDO> myPage(TakeawayCategoryPageDTO dto) {
-        return null;
+
+        return lambdaQuery().like(StrUtil.isNotBlank(dto.getName()), TakeawayCategoryDO::getName, dto.getName())
+            .eq(dto.getScene() != null, TakeawayCategoryDO::getScene, dto.getScene())
+            .eq(dto.getEnableFlag() != null, BaseEntity::getEnableFlag, dto.getEnableFlag())
+            .orderByDesc(BaseEntity::getUpdateTime).page(dto.getPage(true));
     }
 
     /**
@@ -36,7 +65,7 @@ public class TakeawayCategoryServiceImpl extends ServiceImpl<TakeawayCategoryMap
      */
     @Override
     public TakeawayCategoryDO infoById(NotNullId notNullId) {
-        return null;
+        return getById(notNullId.getId());
     }
 
     /**
@@ -44,6 +73,9 @@ public class TakeawayCategoryServiceImpl extends ServiceImpl<TakeawayCategoryMap
      */
     @Override
     public String deleteByIdSet(NotEmptyIdSet notEmptyIdSet) {
-        return null;
+
+        removeByIds(notEmptyIdSet.getIdSet());
+
+        return BaseBizCodeEnum.OK;
     }
 }

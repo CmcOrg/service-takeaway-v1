@@ -11,8 +11,8 @@ import lombok.Getter;
 @Schema(description = "外卖场景")
 public enum TakeawaySceneEnum {
 
-    DINNER((byte)1, ""), //
-    TAKEAWAY((byte)2, ""), //
+    DINNER((byte)1, "堂食"), //
+    TAKEAWAY((byte)2, "外卖"), //
 
     ;
 
