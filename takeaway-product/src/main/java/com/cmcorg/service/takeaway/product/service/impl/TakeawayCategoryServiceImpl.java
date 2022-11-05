@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cmcorg.engine.web.auth.exception.BaseBizCodeEnum;
 import com.cmcorg.engine.web.auth.model.entity.BaseEntity;
 import com.cmcorg.engine.web.auth.model.vo.ApiResultVO;
+import com.cmcorg.engine.web.auth.util.MyEntityUtil;
 import com.cmcorg.engine.web.model.model.dto.NotEmptyIdSet;
 import com.cmcorg.engine.web.model.model.dto.NotNullId;
 import com.cmcorg.service.takeaway.product.mapper.TakeawayCategoryMapper;
@@ -41,7 +42,7 @@ public class TakeawayCategoryServiceImpl extends ServiceImpl<TakeawayCategoryMap
         takeawayCategoryDO.setId(dto.getId());
         takeawayCategoryDO.setEnableFlag(BooleanUtil.isTrue(dto.getEnableFlag()));
         takeawayCategoryDO.setDelFlag(false);
-        takeawayCategoryDO.setRemark("");
+        takeawayCategoryDO.setRemark(MyEntityUtil.getNotNullStr(dto.getRemark()));
 
         save(takeawayCategoryDO);
 
