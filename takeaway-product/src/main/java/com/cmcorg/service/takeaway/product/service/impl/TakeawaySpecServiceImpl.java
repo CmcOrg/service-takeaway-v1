@@ -60,7 +60,7 @@ public class TakeawaySpecServiceImpl extends ServiceImpl<TakeawaySpecMapper, Tak
             .like(StrUtil.isNotBlank(dto.getName()), TakeawaySpecDO::getName, dto.getName())
             .like(StrUtil.isNotBlank(dto.getRemark()), BaseEntity::getRemark, dto.getRemark())
             .eq(dto.getEnableFlag() != null, BaseEntity::getEnableFlag, dto.getEnableFlag())
-            .orderByDesc(BaseEntity::getUpdateTime).page(dto.getPage(true));
+            .orderByDesc(TakeawaySpecDO::getOrderNo).page(dto.getPage(true));
     }
 
     /**
