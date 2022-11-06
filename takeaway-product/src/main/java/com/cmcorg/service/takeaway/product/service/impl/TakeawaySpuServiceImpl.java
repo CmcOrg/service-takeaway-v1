@@ -90,9 +90,13 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
 
         List<TakeawaySpuSpecDO> takeawaySpuSpecDOInsertList = new ArrayList<>();
         for (Object item : specJsonList) { // 备注：item是一个：JSONArray
+            JSONArray jsonArray = (JSONArray)item;
+            if (jsonArray.size() == 0) {
+                continue;
+            }
             TakeawaySpuSpecDO takeawaySpuSpecDO = new TakeawaySpuSpecDO();
             takeawaySpuSpecDO.setSpuId(takeawaySpuDO.getId());
-            takeawaySpuSpecDO.setSpecJsonListStr(item.toString());
+            takeawaySpuSpecDO.setSpecJsonListStr(jsonArray.toString());
             takeawaySpuSpecDOInsertList.add(takeawaySpuSpecDO);
         }
         if (takeawaySpuSpecDOInsertList.size() == 0) {
@@ -145,13 +149,13 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
                 .eq(TakeawaySpuRefCategoryDO::getSpuId, notNullId.getId()).list().stream()
                 .map(TakeawaySpuRefCategoryDO::getCategoryId).collect(Collectors.toSet());
 
-        Set<String> specJsonListStrSet =
+        List<String> specJsonListStrList =
             takeawaySpuSpecService.lambdaQuery().select(TakeawaySpuSpecDO::getSpecJsonListStr)
                 .eq(TakeawaySpuSpecDO::getSpuId, notNullId.getId()).list().stream()
-                .map(TakeawaySpuSpecDO::getSpecJsonListStr).collect(Collectors.toSet());
+                .map(TakeawaySpuSpecDO::getSpecJsonListStr).collect(Collectors.toList());
 
         takeawaySpuInfoByIdVO.setCategoryIdSet(categoryIdSet);
-        takeawaySpuInfoByIdVO.setSpecJsonListStr(JSONUtil.toJsonStr(specJsonListStrSet));
+        takeawaySpuInfoByIdVO.setSpecJsonListStr(JSONUtil.toJsonStr(specJsonListStrList));
 
         return takeawaySpuInfoByIdVO;
     }
