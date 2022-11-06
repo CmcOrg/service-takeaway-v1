@@ -89,7 +89,7 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
         JSONArray specJsonList = JSONUtil.parseArray(dto.getSpecJsonListStr());
 
         List<TakeawaySpuSpecDO> takeawaySpuSpecDOInsertList = new ArrayList<>();
-        for (Object item : specJsonList) {
+        for (Object item : specJsonList) { // 备注：item是一个：JSONArray
             TakeawaySpuSpecDO takeawaySpuSpecDO = new TakeawaySpuSpecDO();
             takeawaySpuSpecDO.setSpuId(takeawaySpuDO.getId());
             takeawaySpuSpecDO.setSpecJsonListStr(item.toString());
