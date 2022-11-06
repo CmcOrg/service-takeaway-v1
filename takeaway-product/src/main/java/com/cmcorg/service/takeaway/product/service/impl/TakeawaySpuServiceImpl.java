@@ -4,6 +4,8 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cmcorg.engine.web.auth.exception.BaseBizCodeEnum;
@@ -84,14 +86,13 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
             takeawaySpuRefCategoryService.saveBatch(takeawaySpuRefCategoryDOInsertList);
         }
 
+        JSONArray specJsonList = JSONUtil.parseArray(dto.getSpecJsonListStr());
+
         List<TakeawaySpuSpecDO> takeawaySpuSpecDOInsertList = new ArrayList<>();
-        for (String item : dto.getSpecJsonListStrSet()) {
-            if (StrUtil.isBlank(item)) {
-                continue;
-            }
+        for (Object item : specJsonList) {
             TakeawaySpuSpecDO takeawaySpuSpecDO = new TakeawaySpuSpecDO();
             takeawaySpuSpecDO.setSpuId(takeawaySpuDO.getId());
-            takeawaySpuSpecDO.setSpecJsonListStr(item);
+            takeawaySpuSpecDO.setSpecJsonListStr(item.toString());
             takeawaySpuSpecDOInsertList.add(takeawaySpuSpecDO);
         }
         if (takeawaySpuSpecDOInsertList.size() == 0) {
@@ -150,7 +151,7 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
                 .map(TakeawaySpuSpecDO::getSpecJsonListStr).collect(Collectors.toSet());
 
         takeawaySpuInfoByIdVO.setCategoryIdSet(categoryIdSet);
-        takeawaySpuInfoByIdVO.setSpecJsonListStrSet(specJsonListStrSet);
+        takeawaySpuInfoByIdVO.setSpecJsonListStr(JSONUtil.toJsonStr(specJsonListStrSet));
 
         return takeawaySpuInfoByIdVO;
     }

@@ -14,7 +14,7 @@ public class TakeawaySpuInfoByIdVO extends TakeawaySpuDO {
     @Schema(description = "商品分类主键 idSet")
     private Set<Long> categoryIdSet;
 
-    @Schema(description = "规格 json对象集合字符串 set")
-    private Set<String> specJsonListStrSet;
+    @Schema(description = "规格 json对象集合字符串")
+    private String specJsonListStr;
 
 }
