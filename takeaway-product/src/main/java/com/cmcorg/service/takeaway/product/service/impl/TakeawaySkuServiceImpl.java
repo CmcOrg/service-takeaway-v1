@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cmcorg.engine.web.auth.exception.BaseBizCodeEnum;
 import com.cmcorg.engine.web.auth.model.entity.BaseEntity;
+import com.cmcorg.engine.web.auth.util.MyEntityUtil;
 import com.cmcorg.engine.web.model.model.dto.NotEmptyIdSet;
 import com.cmcorg.engine.web.model.model.dto.NotNullId;
 import com.cmcorg.service.takeaway.product.mapper.TakeawaySkuMapper;
@@ -14,6 +15,8 @@ import com.cmcorg.service.takeaway.product.model.entity.TakeawaySkuDO;
 import com.cmcorg.service.takeaway.product.service.TakeawaySkuService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 
 @Service
 public class TakeawaySkuServiceImpl extends ServiceImpl<TakeawaySkuMapper, TakeawaySkuDO>
@@ -25,26 +28,21 @@ public class TakeawaySkuServiceImpl extends ServiceImpl<TakeawaySkuMapper, Takea
     @Override
     public String insertOrUpdate(TakeawaySkuInsertOrUpdateDTO dto) {
 
-        //        TakeawaySkuDO takeawaySkuDO = new TakeawaySkuDO();
-        //        takeawaySkuDO.setSpuId(dto.getSpuId());
-        //        takeawaySkuDO.setSpuSpecId(dto.getSpuSpecId());
-        //        takeawaySkuDO.setPrice(dto.getPrice());
-        //        takeawaySkuDO.setMinBuyNumber();
-        //        takeawaySkuDO.setMaxBuyNumber();
-        //        takeawaySkuDO.setDiscountPrice();
-        //        takeawaySkuDO.setDiscountNumber();
-        //        takeawaySkuDO.setPackagePrice();
-        //        takeawaySkuDO.setScene();
-        //        takeawaySkuDO.setPrepareS();
-        //        takeawaySkuDO.setId();
-        //        takeawaySkuDO.setCreateId();
-        //        takeawaySkuDO.setCreateTime();
-        //        takeawaySkuDO.setUpdateId();
-        //        takeawaySkuDO.setUpdateTime();
-        //        takeawaySkuDO.setVersion();
-        //        takeawaySkuDO.setEnableFlag();
-        //        takeawaySkuDO.setDelFlag();
-        //        takeawaySkuDO.setRemark();
+        TakeawaySkuDO takeawaySkuDO = new TakeawaySkuDO();
+        takeawaySkuDO.setSpuId(dto.getSpuId());
+        takeawaySkuDO.setSpuSpecJsonListStr(dto.getSpuSpecJsonListStr());
+        takeawaySkuDO.setPrice(dto.getPrice());
+        takeawaySkuDO.setMinBuyNumber(MyEntityUtil.getNotNullLong(dto.getMinBuyNumber(), 0L));
+        takeawaySkuDO.setMaxBuyNumber(MyEntityUtil.getNotNullLong(dto.getMaxBuyNumber(), -1L));
+        takeawaySkuDO.setDiscountPrice(MyEntityUtil.getNotNullBigDecimal(dto.getDiscountPrice(), BigDecimal.ZERO));
+        takeawaySkuDO.setDiscountNumber(MyEntityUtil.getNotNullInt(dto.getDiscountNumber(), 0));
+        takeawaySkuDO.setPackagePrice(MyEntityUtil.getNotNullBigDecimal(dto.getPackagePrice(), BigDecimal.ZERO));
+        takeawaySkuDO.setScene(dto.getScene());
+        takeawaySkuDO.setPrepareS(MyEntityUtil.getNotNullInt(dto.getPrepareS(), 0));
+        takeawaySkuDO.setId(dto.getId());
+        takeawaySkuDO.setEnableFlag(dto.getEnableFlag());
+        takeawaySkuDO.setDelFlag(false);
+        takeawaySkuDO.setRemark(MyEntityUtil.getNotNullStr(dto.getRemark()));
 
         return BaseBizCodeEnum.OK;
     }

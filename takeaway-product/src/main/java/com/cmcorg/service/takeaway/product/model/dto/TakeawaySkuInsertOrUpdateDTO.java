@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
 @EqualsAndHashCode(callSuper = true)
@@ -21,11 +22,10 @@ public class TakeawaySkuInsertOrUpdateDTO extends BaseInsertOrUpdateDTO {
     @Schema(description = "SPU 主键 id（外键）")
     private Long spuId;
 
-    @Min(1)
-    @NotNull
+    @NotBlank
     @RequestField(formTitle = "选择规格")
-    @Schema(description = "SPU 规格主键 id（外键）")
-    private Long spuSpecId;
+    @Schema(description = "规格 json对象集合字符串，例如：[{}]")
+    private String spuSpecJsonListStr;
 
     @NotNull
     @Schema(description = "价格")
