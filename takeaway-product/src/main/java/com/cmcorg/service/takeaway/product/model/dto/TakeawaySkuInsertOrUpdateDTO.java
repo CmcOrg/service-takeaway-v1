@@ -23,7 +23,7 @@ public class TakeawaySkuInsertOrUpdateDTO extends BaseInsertOrUpdateDTO {
     private Long spuId;
 
     @NotBlank
-    @RequestField(formTitle = "选择规格")
+    @RequestField(formTitle = "规格参数")
     @Schema(description = "规格 json对象集合字符串，例如：[{}]")
     private String spuSpecJsonListStr;
 
