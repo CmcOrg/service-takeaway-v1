@@ -11,9 +11,9 @@ spring:
         namespace: takeaway
         file-extension: yaml
         extension-configs:
-          - data-id: service-engine-takeaway-v1.yml
-          - data-id: mysql-service-engine-takeaway-v1.yml
-          - data-id: refresh-service-engine-takeaway-v1.yml
+          - data-id: service-takeaway-v1.yml
+          - data-id: mysql-service-takeaway-v1.yml
+          - data-id: refresh-service-takeaway-v1.yml
             refresh: true
       discovery:
         namespace: ${spring.cloud.nacos.config.namespace}
