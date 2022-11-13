@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: service-engine-takeaway-v1
+    name: service-takeaway-v1
   cloud:
     nacos:
       server-addr: 121.36.195.98:8848
