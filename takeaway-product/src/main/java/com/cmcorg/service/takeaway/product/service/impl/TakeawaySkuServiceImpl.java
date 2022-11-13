@@ -44,6 +44,8 @@ public class TakeawaySkuServiceImpl extends ServiceImpl<TakeawaySkuMapper, Takea
         takeawaySkuDO.setDelFlag(false);
         takeawaySkuDO.setRemark(MyEntityUtil.getNotNullStr(dto.getRemark()));
 
+        saveOrUpdate(takeawaySkuDO);
+
         return BaseBizCodeEnum.OK;
     }
 

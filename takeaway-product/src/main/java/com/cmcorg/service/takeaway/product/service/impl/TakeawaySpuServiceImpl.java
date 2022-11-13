@@ -123,7 +123,8 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
     @Override
     public Page<TakeawaySpuDO> myPage(TakeawaySpuPageDTO dto) {
 
-        return lambdaQuery().like(StrUtil.isNotBlank(dto.getName()), TakeawaySpuDO::getName, dto.getName())
+        return lambdaQuery().eq(dto.getId() != null, BaseEntity::getId, dto.getId())
+            .like(StrUtil.isNotBlank(dto.getName()), TakeawaySpuDO::getName, dto.getName())
             .eq(dto.getScene() != null, TakeawaySpuDO::getScene, dto.getScene())
             .eq(dto.getMustFlag() != null, TakeawaySpuDO::getMustFlag, dto.getMustFlag())
             .like(StrUtil.isNotBlank(dto.getRemark()), BaseEntity::getRemark, dto.getRemark())

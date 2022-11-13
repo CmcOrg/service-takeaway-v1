@@ -10,6 +10,9 @@ import lombok.EqualsAndHashCode;
 @Data
 public class TakeawaySpuPageDTO extends MyPageDTO {
 
+    @Schema(description = "主键id")
+    private Long id;
+
     @Schema(description = "SPU名称")
     private String name;
 
