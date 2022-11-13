@@ -23,7 +23,7 @@ public class TakeawaySkuDO extends BaseEntity {
     @Schema(description = "SPU 主键 id（外键）")
     private Long spuId;
 
-    @RequestField(formTitle = "规格参数")
+    @RequestField(formTitle = "规格参数", hideInSearchFlag = true)
     @Schema(description = "规格 json对象集合字符串，例如：[{}]")
     private String spuSpecJsonListStr;
 
