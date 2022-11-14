@@ -2,7 +2,6 @@ package com.cmcorg.service.takeaway.product.model.dto;
 
 import com.cmcorg.engine.web.model.generate.model.annotation.RequestField;
 import com.cmcorg.engine.web.model.model.dto.BaseInsertOrUpdateDTO;
-import com.cmcorg.service.takeaway.product.model.enums.TakeawaySceneEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -49,11 +48,6 @@ public class TakeawaySkuInsertOrUpdateDTO extends BaseInsertOrUpdateDTO {
 
     @Schema(description = "打包价格")
     private BigDecimal packagePrice;
-
-    @NotNull
-    @RequestField(formTitle = "场景")
-    @Schema(description = "场景：1 堂食 2 外卖")
-    private TakeawaySceneEnum scene;
 
     @RequestField(formTitle = "备货时长", formTooltip = "单位：秒")
     @Schema(description = "备货时长（秒）")

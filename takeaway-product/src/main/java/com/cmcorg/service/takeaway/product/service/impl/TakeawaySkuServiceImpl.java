@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cmcorg.engine.web.auth.exception.BaseBizCodeEnum;
 import com.cmcorg.engine.web.auth.model.entity.BaseEntity;
+import com.cmcorg.engine.web.auth.model.vo.ApiResultVO;
 import com.cmcorg.engine.web.auth.util.MyEntityUtil;
 import com.cmcorg.engine.web.model.model.dto.NotEmptyIdSet;
 import com.cmcorg.engine.web.model.model.dto.NotNullId;
@@ -12,21 +13,35 @@ import com.cmcorg.service.takeaway.product.mapper.TakeawaySkuMapper;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySkuInsertOrUpdateDTO;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySkuPageDTO;
 import com.cmcorg.service.takeaway.product.model.entity.TakeawaySkuDO;
+import com.cmcorg.service.takeaway.product.model.entity.TakeawaySpuDO;
 import com.cmcorg.service.takeaway.product.service.TakeawaySkuService;
+import com.cmcorg.service.takeaway.product.service.TakeawaySpuService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 
 @Service
 public class TakeawaySkuServiceImpl extends ServiceImpl<TakeawaySkuMapper, TakeawaySkuDO>
     implements TakeawaySkuService {
 
+    @Resource
+    TakeawaySpuService takeawaySpuService;
+
     /**
      * 新增/修改
      */
     @Override
     public String insertOrUpdate(TakeawaySkuInsertOrUpdateDTO dto) {
+
+        TakeawaySpuDO takeawaySpuDO =
+            takeawaySpuService.lambdaQuery().select(TakeawaySpuDO::getScene).eq(BaseEntity::getId, dto.getSpuId())
+                .one();
+
+        if (takeawaySpuDO == null) {
+            ApiResultVO.error("操作失败：spu不存在");
+        }
 
         TakeawaySkuDO takeawaySkuDO = new TakeawaySkuDO();
         takeawaySkuDO.setSpuId(dto.getSpuId());
@@ -37,7 +52,7 @@ public class TakeawaySkuServiceImpl extends ServiceImpl<TakeawaySkuMapper, Takea
         takeawaySkuDO.setDiscountPrice(MyEntityUtil.getNotNullBigDecimal(dto.getDiscountPrice(), BigDecimal.ZERO));
         takeawaySkuDO.setDiscountNumber(MyEntityUtil.getNotNullInt(dto.getDiscountNumber(), -1));
         takeawaySkuDO.setPackagePrice(MyEntityUtil.getNotNullBigDecimal(dto.getPackagePrice(), BigDecimal.ZERO));
-        takeawaySkuDO.setScene(dto.getScene());
+        takeawaySkuDO.setScene(takeawaySpuDO.getScene());
         takeawaySkuDO.setPrepareS(MyEntityUtil.getNotNullInt(dto.getPrepareS(), -1));
         takeawaySkuDO.setId(dto.getId());
         takeawaySkuDO.setEnableFlag(dto.getEnableFlag());
