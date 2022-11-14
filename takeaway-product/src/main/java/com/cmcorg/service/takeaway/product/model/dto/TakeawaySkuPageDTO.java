@@ -16,6 +16,9 @@ public class TakeawaySkuPageDTO extends MyPageDTO {
     @Schema(description = "场景：1 堂食 2 外卖")
     private TakeawaySceneEnum scene;
 
+    @Schema(description = "规格 json对象集合字符串，例如：[{}]")
+    private String spuSpecJsonListStr;
+
     @Schema(description = "是否启用")
     private Boolean enableFlag;
 

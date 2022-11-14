@@ -93,13 +93,14 @@ public class TakeawaySkuServiceImpl extends ServiceImpl<TakeawaySkuMapper, Takea
     @Override
     public Page<TakeawaySkuDO> myPage(TakeawaySkuPageDTO dto) {
 
-        Page<TakeawaySkuDO> takeawaySkuDOPage =
-            lambdaQuery().eq(dto.getSpuId() != null, TakeawaySkuDO::getSpuId, dto.getSpuId())
-                .eq(dto.getScene() != null, TakeawaySkuDO::getScene, dto.getScene())
-                .like(StrUtil.isNotBlank(dto.getRemark()), BaseEntity::getRemark, dto.getRemark())
-                .eq(dto.getEnableFlag() != null, BaseEntity::getEnableFlag, dto.getEnableFlag())
-                .orderByDesc(TakeawaySkuDO::getSpuId).orderByDesc(TakeawaySkuDO::getSpuSpecJsonListStr)
-                .page(dto.getPage(true));
+        Page<TakeawaySkuDO> takeawaySkuDOPage = lambdaQuery()
+            .like(StrUtil.isNotBlank(dto.getSpuSpecJsonListStr()), TakeawaySkuDO::getSpuSpecJsonListStr,
+                dto.getSpuSpecJsonListStr()).eq(dto.getSpuId() != null, TakeawaySkuDO::getSpuId, dto.getSpuId())
+            .eq(dto.getScene() != null, TakeawaySkuDO::getScene, dto.getScene())
+            .like(StrUtil.isNotBlank(dto.getRemark()), BaseEntity::getRemark, dto.getRemark())
+            .eq(dto.getEnableFlag() != null, BaseEntity::getEnableFlag, dto.getEnableFlag())
+            .orderByDesc(TakeawaySkuDO::getSpuId).orderByDesc(TakeawaySkuDO::getSpuSpecJsonListStr)
+            .page(dto.getPage(true));
 
         if (CollUtil.isNotEmpty(takeawaySkuDOPage.getRecords())) {
 
