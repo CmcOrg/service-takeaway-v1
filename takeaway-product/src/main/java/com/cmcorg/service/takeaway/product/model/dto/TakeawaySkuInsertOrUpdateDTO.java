@@ -53,6 +53,12 @@ public class TakeawaySkuInsertOrUpdateDTO extends BaseInsertOrUpdateDTO {
     @Schema(description = "备货时长（秒）")
     private Integer prepareS;
 
+    @Min(0)
+    @NotNull
+    @RequestField(hideInSearchFlag = true)
+    @Schema(description = "库存")
+    private Long number;
+
     @Schema(description = "是否启用")
     private Boolean enableFlag;
 

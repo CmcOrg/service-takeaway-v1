@@ -64,4 +64,8 @@ public class TakeawaySkuDO extends BaseEntity {
     @Schema(description = "spu名称")
     private String spuFullName;
 
+    @RequestField(hideInSearchFlag = true)
+    @Schema(description = "库存")
+    private Long number;
+
 }

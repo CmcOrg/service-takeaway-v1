@@ -59,6 +59,7 @@ public class TakeawaySkuServiceImpl extends ServiceImpl<TakeawaySkuMapper, Takea
         takeawaySkuDO.setPackagePrice(MyEntityUtil.getNotNullBigDecimal(dto.getPackagePrice(), BigDecimal.ZERO));
         takeawaySkuDO.setScene(takeawaySpuDO.getScene());
         takeawaySkuDO.setPrepareS(MyEntityUtil.getNotNullInt(dto.getPrepareS(), -1));
+        takeawaySkuDO.setNumber(dto.getNumber());
         takeawaySkuDO.setId(dto.getId());
         takeawaySkuDO.setEnableFlag(dto.getEnableFlag());
         takeawaySkuDO.setDelFlag(false);
