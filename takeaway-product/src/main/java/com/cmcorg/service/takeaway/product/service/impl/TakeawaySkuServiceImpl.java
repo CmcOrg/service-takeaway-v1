@@ -32,13 +32,13 @@ public class TakeawaySkuServiceImpl extends ServiceImpl<TakeawaySkuMapper, Takea
         takeawaySkuDO.setSpuId(dto.getSpuId());
         takeawaySkuDO.setSpuSpecJsonListStr(dto.getSpuSpecJsonListStr());
         takeawaySkuDO.setPrice(dto.getPrice());
-        takeawaySkuDO.setMinBuyNumber(MyEntityUtil.getNotNullLong(dto.getMinBuyNumber(), 0L));
+        takeawaySkuDO.setMinBuyNumber(MyEntityUtil.getNotNullLong(dto.getMinBuyNumber(), -1L));
         takeawaySkuDO.setMaxBuyNumber(MyEntityUtil.getNotNullLong(dto.getMaxBuyNumber(), -1L));
         takeawaySkuDO.setDiscountPrice(MyEntityUtil.getNotNullBigDecimal(dto.getDiscountPrice(), BigDecimal.ZERO));
-        takeawaySkuDO.setDiscountNumber(MyEntityUtil.getNotNullInt(dto.getDiscountNumber(), 0));
+        takeawaySkuDO.setDiscountNumber(MyEntityUtil.getNotNullInt(dto.getDiscountNumber(), -1));
         takeawaySkuDO.setPackagePrice(MyEntityUtil.getNotNullBigDecimal(dto.getPackagePrice(), BigDecimal.ZERO));
         takeawaySkuDO.setScene(dto.getScene());
-        takeawaySkuDO.setPrepareS(MyEntityUtil.getNotNullInt(dto.getPrepareS(), 0));
+        takeawaySkuDO.setPrepareS(MyEntityUtil.getNotNullInt(dto.getPrepareS(), -1));
         takeawaySkuDO.setId(dto.getId());
         takeawaySkuDO.setEnableFlag(dto.getEnableFlag());
         takeawaySkuDO.setDelFlag(false);
