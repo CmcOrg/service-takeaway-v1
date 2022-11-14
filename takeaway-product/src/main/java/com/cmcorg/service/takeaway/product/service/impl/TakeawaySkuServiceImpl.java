@@ -1,5 +1,6 @@
 package com.cmcorg.service.takeaway.product.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -21,6 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class TakeawaySkuServiceImpl extends ServiceImpl<TakeawaySkuMapper, TakeawaySkuDO>
@@ -70,11 +75,33 @@ public class TakeawaySkuServiceImpl extends ServiceImpl<TakeawaySkuMapper, Takea
     @Override
     public Page<TakeawaySkuDO> myPage(TakeawaySkuPageDTO dto) {
 
-        return lambdaQuery().eq(dto.getSpuId() != null, TakeawaySkuDO::getSpuId, dto.getSpuId())
-            .eq(dto.getScene() != null, TakeawaySkuDO::getScene, dto.getScene())
-            .like(StrUtil.isNotBlank(dto.getRemark()), BaseEntity::getRemark, dto.getRemark())
-            .eq(dto.getEnableFlag() != null, BaseEntity::getEnableFlag, dto.getEnableFlag())
-            .orderByDesc(TakeawaySkuDO::getUpdateTime).page(dto.getPage(true));
+        Page<TakeawaySkuDO> takeawaySkuDOPage =
+            lambdaQuery().eq(dto.getSpuId() != null, TakeawaySkuDO::getSpuId, dto.getSpuId())
+                .eq(dto.getScene() != null, TakeawaySkuDO::getScene, dto.getScene())
+                .like(StrUtil.isNotBlank(dto.getRemark()), BaseEntity::getRemark, dto.getRemark())
+                .eq(dto.getEnableFlag() != null, BaseEntity::getEnableFlag, dto.getEnableFlag())
+                .orderByDesc(TakeawaySkuDO::getUpdateTime).page(dto.getPage(true));
+
+        if (CollUtil.isNotEmpty(takeawaySkuDOPage.getRecords())) {
+
+            // 设置：spu名称
+            Set<Long> spuIdSet =
+                takeawaySkuDOPage.getRecords().stream().map(TakeawaySkuDO::getSpuId).collect(Collectors.toSet());
+
+            List<TakeawaySpuDO> takeawaySpuDOList =
+                takeawaySpuService.lambdaQuery().select(BaseEntity::getId, TakeawaySpuDO::getName)
+                    .in(BaseEntity::getId, spuIdSet).list();
+
+            Map<Long, String> spuIdNameMap =
+                takeawaySpuDOList.stream().collect(Collectors.toMap(BaseEntity::getId, TakeawaySpuDO::getName));
+
+            for (TakeawaySkuDO item : takeawaySkuDOPage.getRecords()) {
+                item.setSpuFullName(spuIdNameMap.get(item.getSpuId()));
+            }
+
+        }
+
+        return takeawaySkuDOPage;
     }
 
     /**

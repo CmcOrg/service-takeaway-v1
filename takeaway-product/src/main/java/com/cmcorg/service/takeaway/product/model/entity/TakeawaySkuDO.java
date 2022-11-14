@@ -1,5 +1,6 @@
 package com.cmcorg.service.takeaway.product.model.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.cmcorg.engine.web.auth.model.entity.BaseEntity;
 import com.cmcorg.engine.web.model.generate.model.annotation.RequestClass;
@@ -58,5 +59,9 @@ public class TakeawaySkuDO extends BaseEntity {
     @RequestField(formTitle = "备货时长", formTooltip = "单位：秒", hideInSearchFlag = true)
     @Schema(description = "备货时长（秒）")
     private Integer prepareS;
+
+    @TableField(exist = false)
+    @Schema(description = "spu名称")
+    private String spuFullName;
 
 }
