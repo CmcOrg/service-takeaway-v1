@@ -45,7 +45,14 @@ public class TakeawaySkuServiceImpl extends ServiceImpl<TakeawaySkuMapper, Takea
                 .one();
 
         if (takeawaySpuDO == null) {
-            ApiResultVO.error("操作失败：spu不存在");
+            ApiResultVO.error("操作失败：spu 不存在");
+        }
+
+        boolean exists = lambdaQuery().eq(TakeawaySkuDO::getSpuId, dto.getSpuId())
+            .eq(TakeawaySkuDO::getSpuSpecJsonListStr, dto.getSpuSpecJsonListStr()).exists();
+
+        if (exists) {
+            ApiResultVO.error("操作失败：spu 下已存在该规格的 sku");
         }
 
         TakeawaySkuDO takeawaySkuDO = new TakeawaySkuDO();
@@ -81,7 +88,8 @@ public class TakeawaySkuServiceImpl extends ServiceImpl<TakeawaySkuMapper, Takea
                 .eq(dto.getScene() != null, TakeawaySkuDO::getScene, dto.getScene())
                 .like(StrUtil.isNotBlank(dto.getRemark()), BaseEntity::getRemark, dto.getRemark())
                 .eq(dto.getEnableFlag() != null, BaseEntity::getEnableFlag, dto.getEnableFlag())
-                .orderByDesc(TakeawaySkuDO::getUpdateTime).page(dto.getPage(true));
+                .orderByDesc(TakeawaySkuDO::getSpuId).orderByDesc(TakeawaySkuDO::getSpuSpecJsonListStr)
+                .page(dto.getPage(true));
 
         if (CollUtil.isNotEmpty(takeawaySkuDOPage.getRecords())) {
 

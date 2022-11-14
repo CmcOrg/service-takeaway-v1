@@ -152,8 +152,8 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
 
         List<JSONArray> specJsonList =
             takeawaySpuSpecService.lambdaQuery().select(TakeawaySpuSpecDO::getSpecJsonListStr)
-                .eq(TakeawaySpuSpecDO::getSpuId, notNullId.getId()).list().stream()
-                .map(it -> JSONUtil.parseArray(it.getSpecJsonListStr())).collect(Collectors.toList());
+                .eq(TakeawaySpuSpecDO::getSpuId, notNullId.getId()).orderByDesc(TakeawaySpuSpecDO::getSpecJsonListStr)
+                .list().stream().map(it -> JSONUtil.parseArray(it.getSpecJsonListStr())).collect(Collectors.toList());
 
         takeawaySpuInfoByIdVO.setCategoryIdSet(categoryIdSet);
         takeawaySpuInfoByIdVO.setSpecJsonListStr(JSONUtil.toJsonStr(specJsonList));
