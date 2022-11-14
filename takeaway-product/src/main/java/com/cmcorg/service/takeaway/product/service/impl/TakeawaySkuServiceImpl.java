@@ -128,7 +128,12 @@ public class TakeawaySkuServiceImpl extends ServiceImpl<TakeawaySkuMapper, Takea
      */
     @Override
     public TakeawaySkuDO infoById(NotNullId notNullId) {
-        return getById(notNullId.getId());
+
+        TakeawaySkuDO takeawaySkuDO = getById(notNullId.getId());
+
+        takeawaySkuDO.setSpuSpecJsonListStrSet(CollUtil.newHashSet(takeawaySkuDO.getSpuSpecJsonListStr()));
+
+        return takeawaySkuDO;
     }
 
     /**
