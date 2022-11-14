@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -49,30 +50,39 @@ public class TakeawaySkuServiceImpl extends ServiceImpl<TakeawaySkuMapper, Takea
         }
 
         boolean exists = lambdaQuery().eq(TakeawaySkuDO::getSpuId, dto.getSpuId())
-            .eq(TakeawaySkuDO::getSpuSpecJsonListStr, dto.getSpuSpecJsonListStr()).exists();
+            .in(TakeawaySkuDO::getSpuSpecJsonListStr, dto.getSpuSpecJsonListStrSet())
+            .ne(dto.getId() != null, BaseEntity::getId, dto.getId()).exists();
 
         if (exists) {
             ApiResultVO.error("操作失败：spu 下已存在该规格的 sku");
         }
 
-        TakeawaySkuDO takeawaySkuDO = new TakeawaySkuDO();
-        takeawaySkuDO.setSpuId(dto.getSpuId());
-        takeawaySkuDO.setSpuSpecJsonListStr(dto.getSpuSpecJsonListStr());
-        takeawaySkuDO.setPrice(dto.getPrice());
-        takeawaySkuDO.setMinBuyNumber(MyEntityUtil.getNotNullLong(dto.getMinBuyNumber(), -1L));
-        takeawaySkuDO.setMaxBuyNumber(MyEntityUtil.getNotNullLong(dto.getMaxBuyNumber(), -1L));
-        takeawaySkuDO.setDiscountPrice(MyEntityUtil.getNotNullBigDecimal(dto.getDiscountPrice(), BigDecimal.ZERO));
-        takeawaySkuDO.setDiscountNumber(MyEntityUtil.getNotNullInt(dto.getDiscountNumber(), -1));
-        takeawaySkuDO.setPackagePrice(MyEntityUtil.getNotNullBigDecimal(dto.getPackagePrice(), BigDecimal.ZERO));
-        takeawaySkuDO.setScene(takeawaySpuDO.getScene());
-        takeawaySkuDO.setPrepareS(MyEntityUtil.getNotNullInt(dto.getPrepareS(), -1));
-        takeawaySkuDO.setNumber(MyEntityUtil.getNotNullLong(dto.getNumber(), -1L));
-        takeawaySkuDO.setId(dto.getId());
-        takeawaySkuDO.setEnableFlag(dto.getEnableFlag());
-        takeawaySkuDO.setDelFlag(false);
-        takeawaySkuDO.setRemark(MyEntityUtil.getNotNullStr(dto.getRemark()));
+        List<TakeawaySkuDO> saveOrUpdateList = new ArrayList<>();
 
-        saveOrUpdate(takeawaySkuDO);
+        for (String item : dto.getSpuSpecJsonListStrSet()) {
+
+            TakeawaySkuDO takeawaySkuDO = new TakeawaySkuDO();
+            takeawaySkuDO.setSpuId(dto.getSpuId());
+            takeawaySkuDO.setSpuSpecJsonListStr(item);
+            takeawaySkuDO.setPrice(dto.getPrice());
+            takeawaySkuDO.setMinBuyNumber(MyEntityUtil.getNotNullLong(dto.getMinBuyNumber(), -1L));
+            takeawaySkuDO.setMaxBuyNumber(MyEntityUtil.getNotNullLong(dto.getMaxBuyNumber(), -1L));
+            takeawaySkuDO.setDiscountPrice(MyEntityUtil.getNotNullBigDecimal(dto.getDiscountPrice(), BigDecimal.ZERO));
+            takeawaySkuDO.setDiscountNumber(MyEntityUtil.getNotNullInt(dto.getDiscountNumber(), -1));
+            takeawaySkuDO.setPackagePrice(MyEntityUtil.getNotNullBigDecimal(dto.getPackagePrice(), BigDecimal.ZERO));
+            takeawaySkuDO.setScene(takeawaySpuDO.getScene());
+            takeawaySkuDO.setPrepareS(MyEntityUtil.getNotNullInt(dto.getPrepareS(), -1));
+            takeawaySkuDO.setNumber(MyEntityUtil.getNotNullLong(dto.getNumber(), -1L));
+            takeawaySkuDO.setId(dto.getId());
+            takeawaySkuDO.setEnableFlag(dto.getEnableFlag());
+            takeawaySkuDO.setDelFlag(false);
+            takeawaySkuDO.setRemark(MyEntityUtil.getNotNullStr(dto.getRemark()));
+
+            saveOrUpdateList.add(takeawaySkuDO);
+
+        }
+
+        saveOrUpdateBatch(saveOrUpdateList);
 
         return BaseBizCodeEnum.OK;
     }

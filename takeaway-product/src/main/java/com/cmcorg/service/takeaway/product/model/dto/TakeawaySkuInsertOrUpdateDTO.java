@@ -8,8 +8,9 @@ import lombok.EqualsAndHashCode;
 import org.jetbrains.annotations.NotNull;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -21,10 +22,10 @@ public class TakeawaySkuInsertOrUpdateDTO extends BaseInsertOrUpdateDTO {
     @Schema(description = "SPU 主键 id（外键）")
     private Long spuId;
 
-    @NotBlank
+    @NotEmpty
     @RequestField(formTitle = "规格参数")
-    @Schema(description = "规格 json对象集合字符串，例如：[{}]")
-    private String spuSpecJsonListStr;
+    @Schema(description = "规格 json对象集合字符串，例如：[{}]，set")
+    private Set<String> spuSpecJsonListStrSet;
 
     @NotNull
     @Schema(description = "价格")
