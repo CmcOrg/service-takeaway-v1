@@ -1,4 +1,4 @@
-package com.cmcorg.service.takeaway.rider.model.entity;
+package com.cmcorg.service.takeaway.address.delivery.model.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.cmcorg.engine.web.auth.model.entity.BaseEntity;
@@ -11,29 +11,28 @@ import lombok.EqualsAndHashCode;
 
 @RequestClass(tableIgnoreFields = WebModelConstant.TABLE_IGNORE_FIELDS_TWO)
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "takeaway_rider")
+@TableName(value = "takeaway_address_delivery")
 @Data
-@Schema(description = "主表：骑手")
-public class TakeawayRiderDO extends BaseEntity {
+@Schema(description = "主表：收货地址")
+public class TakeawayAddressDeliveryDO extends BaseEntity {
 
     @RequestField(formTitle = "用户主键 id")
     @Schema(description = "用户主键 id（外键）")
     private Long userId;
 
-    @RequestField(formTitle = "姓名")
-    @Schema(description = "骑手姓名")
+    @RequestField(formTitle = "地图取点")
+    @Schema(description = "地图取点（json）")
+    private String mapJson;
+
+    @Schema(description = "门牌号")
+    private String houseNumber;
+
+    @RequestField(formTitle = "收货人")
+    @Schema(description = "收货人名称")
     private String name;
 
-    @RequestField(formTitle = "身份证号")
-    @Schema(description = "骑手身份证号码")
-    private String idNumber;
-
     @RequestField(formTitle = "联系电话")
-    @Schema(description = "骑手联系电话")
+    @Schema(description = "收货人联系电话")
     private String phone;
-
-    @RequestField(formTitle = "是否开工")
-    @Schema(description = "是否开工")
-    private Boolean workFlag;
 
 }

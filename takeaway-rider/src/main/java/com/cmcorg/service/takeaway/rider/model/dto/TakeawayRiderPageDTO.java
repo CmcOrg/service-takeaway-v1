@@ -10,6 +10,10 @@ import lombok.EqualsAndHashCode;
 @Data
 public class TakeawayRiderPageDTO extends MyPageDTO {
 
+    @RequestField(formTitle = "用户主键 id")
+    @Schema(description = "用户主键 id（外键）")
+    private Long userId;
+
     @RequestField(formTitle = "姓名")
     @Schema(description = "骑手姓名")
     private String name;

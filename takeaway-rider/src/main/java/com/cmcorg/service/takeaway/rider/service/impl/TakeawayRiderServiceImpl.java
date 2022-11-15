@@ -35,7 +35,15 @@ public class TakeawayRiderServiceImpl extends ServiceImpl<TakeawayRiderMapper, T
             ApiResultVO.error("操作失败：身份证号，不能重复");
         }
 
+        exists = lambdaQuery().eq(TakeawayRiderDO::getUserId, dto.getUserId())
+            .ne(dto.getId() != null, BaseEntity::getId, dto.getId()).exists();
+
+        if (exists) {
+            ApiResultVO.error("操作失败：用户已经存在骑手信息");
+        }
+
         TakeawayRiderDO takeawayRiderDO = new TakeawayRiderDO();
+        takeawayRiderDO.setUserId(dto.getUserId());
         takeawayRiderDO.setName(dto.getName());
         takeawayRiderDO.setIdNumber(dto.getIdNumber());
         takeawayRiderDO.setPhone(dto.getPhone());
@@ -56,7 +64,8 @@ public class TakeawayRiderServiceImpl extends ServiceImpl<TakeawayRiderMapper, T
     @Override
     public Page<TakeawayRiderDO> myPage(TakeawayRiderPageDTO dto) {
 
-        return lambdaQuery().like(StrUtil.isNotBlank(dto.getName()), TakeawayRiderDO::getName, dto.getName())
+        return lambdaQuery().eq(dto.getUserId() != null, TakeawayRiderDO::getUserId, dto.getUserId())
+            .like(StrUtil.isNotBlank(dto.getName()), TakeawayRiderDO::getName, dto.getName())
             .like(StrUtil.isNotBlank(dto.getIdNumber()), TakeawayRiderDO::getIdNumber, dto.getIdNumber())
             .like(StrUtil.isNotBlank(dto.getPhone()), TakeawayRiderDO::getPhone, dto.getPhone())
             .eq(dto.getWorkFlag() != null, TakeawayRiderDO::getWorkFlag, dto.getWorkFlag())

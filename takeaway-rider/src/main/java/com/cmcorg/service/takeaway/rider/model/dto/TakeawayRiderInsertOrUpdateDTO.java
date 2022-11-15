@@ -7,12 +7,20 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class TakeawayRiderInsertOrUpdateDTO extends BaseInsertOrUpdateDTO {
+
+    @Min(1)
+    @NotNull
+    @RequestField(formTitle = "用户主键 id")
+    @Schema(description = "用户主键 id（外键）")
+    private Long userId;
 
     @Pattern(regexp = BaseRegexConstant.CHINESE_STR)
     @NotBlank
