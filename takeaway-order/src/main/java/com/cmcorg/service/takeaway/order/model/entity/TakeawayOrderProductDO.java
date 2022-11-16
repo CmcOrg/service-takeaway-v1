@@ -27,14 +27,17 @@ public class TakeawayOrderProductDO {
     @Schema(description = "原始总价（不可修改）")
     private BigDecimal originPrice;
 
+    @Schema(description = "购买数量")
+    private Long number;
+
     @Schema(description = "商品 SKU主键 id")
     private Long skuId;
 
     @Schema(description = "SPU 主键 id（外键）")
     private Long spuId;
 
-    @Schema(description = "SPU 规格主键 id（外键）")
-    private Long spuSpecId;
+    @Schema(description = "规格 json对象集合字符串，例如：[{}]")
+    private String spuSpecJsonListStr;
 
     @Schema(description = "价格")
     private BigDecimal price;
