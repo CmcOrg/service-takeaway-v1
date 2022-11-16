@@ -11,10 +11,7 @@ import lombok.Data;
 @Schema(description = "子表：商品 SPU规格表，主表：商品 SPU")
 public class TakeawaySpuSpecDO {
 
-    /**
-     * 这里是自定义的主键 id
-     */
-    @TableId(type = IdType.ASSIGN_ID)
+    @TableId(type = IdType.AUTO)
     @Schema(description = "主键id")
     private Long id;
 
