@@ -1,4 +1,4 @@
-package generator.entity;
+package com.cmcorg.service.takeaway.order.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -9,10 +9,10 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@TableName(value = "takeaway_order_state_takeaway_seller")
+@TableName(value = "takeaway_order_state_dinner")
 @Data
-@Schema(description = "子表：订单外卖商家状态，父表：订单")
-public class TakeawayOrderStateTakeawaySellerDO {
+@Schema(description = "子表：订单堂食状态，父表：订单")
+public class TakeawayOrderStateDinnerDO {
 
     @TableId(type = IdType.AUTO)
     @Schema(description = "主键id")

@@ -1,4 +1,4 @@
-package generator.entity;
+package com.cmcorg.service.takeaway.order.model.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.cmcorg.engine.web.auth.model.entity.BaseEntity;

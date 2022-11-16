@@ -1,7 +1,7 @@
-package generator.service;
+package com.cmcorg.service.takeaway.order.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import generator.entity.TakeawayOrderDO;
+import com.cmcorg.service.takeaway.order.model.entity.TakeawayOrderDO;
 
 public interface TakeawayOrderService extends IService<TakeawayOrderDO> {
 

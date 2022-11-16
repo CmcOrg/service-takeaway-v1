@@ -1,7 +1,7 @@
-package generator.mapper;
+package com.cmcorg.service.takeaway.order.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import generator.entity.TakeawayOrderStateDinnerDO;
+import com.cmcorg.service.takeaway.order.model.entity.TakeawayOrderStateDinnerDO;
 
 public interface TakeawayOrderStateDinnerMapper extends BaseMapper<TakeawayOrderStateDinnerDO> {
 

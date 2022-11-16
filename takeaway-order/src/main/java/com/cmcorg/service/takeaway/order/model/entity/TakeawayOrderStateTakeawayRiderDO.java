@@ -1,4 +1,4 @@
-package generator.entity;
+package com.cmcorg.service.takeaway.order.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

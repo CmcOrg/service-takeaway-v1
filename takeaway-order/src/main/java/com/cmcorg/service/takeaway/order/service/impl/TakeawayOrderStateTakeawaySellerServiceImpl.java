@@ -1,9 +1,9 @@
-package generator.service.impl;
+package com.cmcorg.service.takeaway.order.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import generator.entity.TakeawayOrderStateTakeawaySellerDO;
-import generator.mapper.TakeawayOrderStateTakeawaySellerMapper;
-import generator.service.TakeawayOrderStateTakeawaySellerService;
+import com.cmcorg.service.takeaway.order.mapper.TakeawayOrderStateTakeawaySellerMapper;
+import com.cmcorg.service.takeaway.order.model.entity.TakeawayOrderStateTakeawaySellerDO;
+import com.cmcorg.service.takeaway.order.service.TakeawayOrderStateTakeawaySellerService;
 import org.springframework.stereotype.Service;
 
 @Service
