@@ -76,13 +76,6 @@
                 <version>${project.version}</version>
             </dependency>
 
-            <!-- web-sign-email -->
-            <dependency>
-                <groupId>${project.groupId}</groupId>
-                <artifactId>web-sign-email</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-
             <!-- web-sign-signinname -->
             <dependency>
                 <groupId>${project.groupId}</groupId>
@@ -90,10 +83,10 @@
                 <version>${project.version}</version>
             </dependency>
 
-            <!-- web-sign-helper -->
+            <!-- web-sign-wx -->
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>web-sign-helper</artifactId>
+                <artifactId>web-sign-wx</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
