@@ -58,16 +58,16 @@
             <artifactId>web-param</artifactId>
         </dependency>
 
-        <!-- web-sign-email -->
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>web-sign-email</artifactId>
-        </dependency>
-
         <!-- web-sign-signinname -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>web-sign-signinname</artifactId>
+        </dependency>
+
+        <!-- web-sign-wx -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>web-sign-wx</artifactId>
         </dependency>
 
         <!-- web-role -->
