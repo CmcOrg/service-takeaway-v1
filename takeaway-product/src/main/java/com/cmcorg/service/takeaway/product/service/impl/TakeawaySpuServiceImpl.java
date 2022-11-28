@@ -17,10 +17,12 @@ import com.cmcorg.engine.web.model.model.dto.NotNullId;
 import com.cmcorg.service.takeaway.product.mapper.TakeawaySpuMapper;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuInsertOrUpdateDTO;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuPageDTO;
+import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuUserPageDTO;
 import com.cmcorg.service.takeaway.product.model.entity.TakeawaySpuDO;
 import com.cmcorg.service.takeaway.product.model.entity.TakeawaySpuRefCategoryDO;
 import com.cmcorg.service.takeaway.product.model.entity.TakeawaySpuSpecDO;
 import com.cmcorg.service.takeaway.product.model.vo.TakeawaySpuInfoByIdVO;
+import com.cmcorg.service.takeaway.product.model.vo.TakeawaySpuUserPageVO;
 import com.cmcorg.service.takeaway.product.service.TakeawaySpuRefCategoryService;
 import com.cmcorg.service.takeaway.product.service.TakeawaySpuService;
 import com.cmcorg.service.takeaway.product.service.TakeawaySpuSpecService;
@@ -174,6 +176,20 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
         deleteByIdSetSub(notEmptyIdSet.getIdSet());
 
         return BaseBizCodeEnum.OK;
+    }
+
+    /**
+     * 用户检索商品
+     */
+    @Override
+    public Page<TakeawaySpuUserPageVO> userPage(TakeawaySpuUserPageDTO dto) {
+
+        // 查询所有关联了 spu的，分类 idSet以及 spuIdSet
+        // 查询对应的分类
+        // 查询对应的 spu
+        // 组装
+
+        return null;
     }
 
 }

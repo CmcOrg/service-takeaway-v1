@@ -8,8 +8,10 @@ import com.cmcorg.engine.web.model.model.dto.NotEmptyIdSet;
 import com.cmcorg.engine.web.model.model.dto.NotNullId;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuInsertOrUpdateDTO;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuPageDTO;
+import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuUserPageDTO;
 import com.cmcorg.service.takeaway.product.model.entity.TakeawaySpuDO;
 import com.cmcorg.service.takeaway.product.model.vo.TakeawaySpuInfoByIdVO;
+import com.cmcorg.service.takeaway.product.model.vo.TakeawaySpuUserPageVO;
 import com.cmcorg.service.takeaway.product.service.TakeawaySpuService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -57,6 +59,12 @@ public class TakeawaySpuController {
     @PreAuthorize("hasAuthority('takeawaySpu:deleteByIdSet')")
     public ApiResultVO<String> deleteByIdSet(@RequestBody @Valid NotEmptyIdSet notEmptyIdSet) {
         return ApiResultVO.ok(baseService.deleteByIdSet(notEmptyIdSet));
+    }
+
+    @Operation(summary = "用户检索商品")
+    @PostMapping("/userPage")
+    public ApiResultVO<Page<TakeawaySpuUserPageVO>> userPage(@RequestBody @Valid TakeawaySpuUserPageDTO dto) {
+        return ApiResultVO.ok(baseService.userPage(dto));
     }
 
 }

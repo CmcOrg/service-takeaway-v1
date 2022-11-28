@@ -6,8 +6,10 @@ import com.cmcorg.engine.web.model.model.dto.NotEmptyIdSet;
 import com.cmcorg.engine.web.model.model.dto.NotNullId;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuInsertOrUpdateDTO;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuPageDTO;
+import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuUserPageDTO;
 import com.cmcorg.service.takeaway.product.model.entity.TakeawaySpuDO;
 import com.cmcorg.service.takeaway.product.model.vo.TakeawaySpuInfoByIdVO;
+import com.cmcorg.service.takeaway.product.model.vo.TakeawaySpuUserPageVO;
 
 public interface TakeawaySpuService extends IService<TakeawaySpuDO> {
 
@@ -18,5 +20,7 @@ public interface TakeawaySpuService extends IService<TakeawaySpuDO> {
     TakeawaySpuInfoByIdVO infoById(NotNullId notNullId);
 
     String deleteByIdSet(NotEmptyIdSet notEmptyIdSet);
+
+    Page<TakeawaySpuUserPageVO> userPage(TakeawaySpuUserPageDTO dto);
 
 }
