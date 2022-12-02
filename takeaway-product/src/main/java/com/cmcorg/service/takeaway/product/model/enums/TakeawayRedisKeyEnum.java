@@ -13,6 +13,10 @@ public enum TakeawayRedisKeyEnum implements IRedisKey {
     // 【PRE_】开头 ↓
 
     // 【_CACHE】结尾 ↓
+    TAKEAWAY_SPU_USER_PRODUCT_DINNER_CACHE, // 用户获取：堂食商品，缓存
+
+    TAKEAWAY_SPU_USER_PRODUCT_TAKEAWAY_CACHE, // 用户获取：外卖商品，缓存
+
     TAKEAWAY_SPU_CACHE, // spu表，缓存
 
     TAKEAWAY_CATEGORY_CACHE, // 分类表，缓存

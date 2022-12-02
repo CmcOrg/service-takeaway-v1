@@ -8,10 +8,10 @@ import com.cmcorg.engine.web.model.model.dto.NotEmptyIdSet;
 import com.cmcorg.engine.web.model.model.dto.NotNullId;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuInsertOrUpdateDTO;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuPageDTO;
-import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuUserPageDTO;
+import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuUserProductDTO;
+import com.cmcorg.service.takeaway.product.model.entity.TakeawayCategoryDO;
 import com.cmcorg.service.takeaway.product.model.entity.TakeawaySpuDO;
 import com.cmcorg.service.takeaway.product.model.vo.TakeawaySpuInfoByIdVO;
-import com.cmcorg.service.takeaway.product.model.vo.TakeawaySpuUserPageVO;
 import com.cmcorg.service.takeaway.product.service.TakeawaySpuService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 
 @WebPage(type = PageTypeEnum.ADMIN, title = "商品SPU")
 @RequestMapping("/takeaway/spu")
@@ -61,10 +62,10 @@ public class TakeawaySpuController {
         return ApiResultVO.ok(baseService.deleteByIdSet(notEmptyIdSet));
     }
 
-    @Operation(summary = "用户检索商品")
-    @PostMapping("/userPage")
-    public ApiResultVO<Page<TakeawaySpuUserPageVO>> userPage(@RequestBody @Valid TakeawaySpuUserPageDTO dto) {
-        return ApiResultVO.ok(baseService.userPage(dto));
+    @Operation(summary = "用户获取商品")
+    @PostMapping("/user/product")
+    public ApiResultVO<List<TakeawayCategoryDO>> userProduct(@RequestBody @Valid TakeawaySpuUserProductDTO dto) {
+        return ApiResultVO.ok(baseService.userProduct(dto));
     }
 
 }
