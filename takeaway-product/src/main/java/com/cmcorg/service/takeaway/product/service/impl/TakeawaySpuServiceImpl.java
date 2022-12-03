@@ -9,6 +9,7 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.ChainWrappers;
 import com.cmcorg.engine.web.auth.exception.BaseBizCodeEnum;
 import com.cmcorg.engine.web.auth.model.entity.BaseEntity;
 import com.cmcorg.engine.web.auth.model.entity.BaseEntityNoId;
@@ -17,14 +18,12 @@ import com.cmcorg.engine.web.auth.util.MyEntityUtil;
 import com.cmcorg.engine.web.cache.util.MyCacheUtil;
 import com.cmcorg.engine.web.model.model.dto.NotEmptyIdSet;
 import com.cmcorg.engine.web.model.model.dto.NotNullId;
+import com.cmcorg.service.takeaway.product.mapper.TakeawaySkuMapper;
 import com.cmcorg.service.takeaway.product.mapper.TakeawaySpuMapper;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuInsertOrUpdateDTO;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuPageDTO;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuUserProductDTO;
-import com.cmcorg.service.takeaway.product.model.entity.TakeawayCategoryDO;
-import com.cmcorg.service.takeaway.product.model.entity.TakeawaySpuDO;
-import com.cmcorg.service.takeaway.product.model.entity.TakeawaySpuRefCategoryDO;
-import com.cmcorg.service.takeaway.product.model.entity.TakeawaySpuSpecDO;
+import com.cmcorg.service.takeaway.product.model.entity.*;
 import com.cmcorg.service.takeaway.product.model.enums.TakeawayRedisKeyEnum;
 import com.cmcorg.service.takeaway.product.model.enums.TakeawaySceneEnum;
 import com.cmcorg.service.takeaway.product.model.vo.TakeawaySpuInfoByIdVO;
@@ -49,6 +48,8 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
     TakeawaySpuSpecService takeawaySpuSpecService;
     @Resource
     TakeawayCategoryService takeawayCategoryService;
+    @Resource
+    TakeawaySkuMapper takeawaySkuMapper;
 
     /**
      * 新增/修改
@@ -233,11 +234,18 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
                         .list());
 
             Map<Long, TakeawaySpuDO> spuMap = MyCacheUtil
-                .getMapCache(TakeawayRedisKeyEnum.TAKEAWAY_SPU_CACHE, MyCacheUtil.getDefaultLongTMap(),
+                .getMapCache(TakeawayRedisKeyEnum.TAKEAWAY_SPU_MAP_CACHE, MyCacheUtil.getDefaultLongTMap(),
                     () -> lambdaQuery().select(BaseEntity::getId, TakeawaySpuDO::getName, TakeawaySpuDO::getMustFlag)
                         .eq(BaseEntityNoId::getEnableFlag, true).in(BaseEntity::getId, spuIdSet)
                         .eq(TakeawaySpuDO::getScene, dto.getScene()).orderByDesc(TakeawaySpuDO::getOrderNo).list()
                         .stream().collect(Collectors.toMap(BaseEntity::getId, it -> it)));
+
+            Map<Long, List<TakeawaySkuDO>> splIdSkuListMap = MyCacheUtil
+                .getMapCache(TakeawayRedisKeyEnum.TAKEAWAY_SPU_ID_SKU_LIST_MAP_CACHE, MyCacheUtil.getDefaultLongTMap(),
+                    () -> ChainWrappers.lambdaQueryChain(takeawaySkuMapper).eq(BaseEntityNoId::getEnableFlag, true)
+                        .in(TakeawaySkuDO::getSpuId, spuIdSet).eq(BaseEntityNoId::getEnableFlag, true).list().stream()
+                        .collect(Collectors
+                            .groupingBy(TakeawaySkuDO::getSpuId, Collectors.mapping(it -> it, Collectors.toList()))));
 
             for (TakeawayCategoryDO item : takeawayCategoryDOList) {
                 Set<Long> refSpuIdSet = categoryRefSpuMap.get(item.getId());
@@ -246,6 +254,7 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
                     for (Long subItem : refSpuIdSet) {
                         TakeawaySpuDO takeawaySpuDO = spuMap.get(subItem);
                         if (takeawaySpuDO != null) {
+                            takeawaySpuDO.setTakeawaySkuDOList(splIdSkuListMap.get(takeawaySpuDO.getId())); // 设置：sku集合
                             refTakeawaySpuDOList.add(takeawaySpuDO);
                         }
                     }
