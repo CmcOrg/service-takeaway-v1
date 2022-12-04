@@ -43,7 +43,7 @@ public class TakeawayCacheHelper {
             .getListCache(TakeawayRedisKeyEnum.TAKEAWAY_CATEGORY_LIST_CACHE, MyCacheUtil.getDefaultResultList(),
                 () -> takeawayCategoryService.lambdaQuery()
                     .select(BaseEntity::getId, TakeawayCategoryDO::getName, TakeawayCategoryDO::getScene)
-                    .eq(BaseEntityNoId::getEnableFlag, true).orderByDesc(TakeawayCategoryDO::getOrderNo).list();)
+                    .eq(BaseEntityNoId::getEnableFlag, true).orderByDesc(TakeawayCategoryDO::getOrderNo).list());
     }
 
     /**
