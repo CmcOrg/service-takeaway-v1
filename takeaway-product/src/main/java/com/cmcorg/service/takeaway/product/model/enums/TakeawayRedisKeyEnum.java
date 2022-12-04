@@ -17,13 +17,13 @@ public enum TakeawayRedisKeyEnum implements IRedisKey {
 
     TAKEAWAY_SPU_USER_PRODUCT_TAKEAWAY_CACHE, // 用户获取：外卖商品，缓存
 
-    TAKEAWAY_SPU_ID_SKU_LIST_MAP_CACHE, // spuId下的 skuList，缓存
+    TAKEAWAY_SKU_LIST_CACHE, // sku表，缓存
 
-    TAKEAWAY_SPU_MAP_CACHE, // spu表 map缓存
+    TAKEAWAY_SPU_LIST_CACHE, // spu表，缓存
 
-    TAKEAWAY_CATEGORY_CACHE, // 分类表，缓存
+    TAKEAWAY_SPU_REF_CATEGORY_LIST_CACHE, // spu，分类 关联表，缓存
 
-    TAKEAWAY_SPU_REF_CATEGORY_CACHE, // spu，分类 关联表，缓存
+    TAKEAWAY_CATEGORY_LIST_CACHE, // 分类表，缓存
 
     // 其他 ↓
 

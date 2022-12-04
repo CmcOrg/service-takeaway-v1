@@ -9,16 +9,13 @@ import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.baomidou.mybatisplus.extension.toolkit.ChainWrappers;
 import com.cmcorg.engine.web.auth.exception.BaseBizCodeEnum;
 import com.cmcorg.engine.web.auth.model.entity.BaseEntity;
-import com.cmcorg.engine.web.auth.model.entity.BaseEntityNoId;
 import com.cmcorg.engine.web.auth.model.vo.ApiResultVO;
 import com.cmcorg.engine.web.auth.util.MyEntityUtil;
 import com.cmcorg.engine.web.cache.util.MyCacheUtil;
 import com.cmcorg.engine.web.model.model.dto.NotEmptyIdSet;
 import com.cmcorg.engine.web.model.model.dto.NotNullId;
-import com.cmcorg.service.takeaway.product.mapper.TakeawaySkuMapper;
 import com.cmcorg.service.takeaway.product.mapper.TakeawaySpuMapper;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuInsertOrUpdateDTO;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuPageDTO;
@@ -27,10 +24,10 @@ import com.cmcorg.service.takeaway.product.model.entity.*;
 import com.cmcorg.service.takeaway.product.model.enums.TakeawayRedisKeyEnum;
 import com.cmcorg.service.takeaway.product.model.enums.TakeawaySceneEnum;
 import com.cmcorg.service.takeaway.product.model.vo.TakeawaySpuInfoByIdVO;
-import com.cmcorg.service.takeaway.product.service.TakeawayCategoryService;
 import com.cmcorg.service.takeaway.product.service.TakeawaySpuRefCategoryService;
 import com.cmcorg.service.takeaway.product.service.TakeawaySpuService;
 import com.cmcorg.service.takeaway.product.service.TakeawaySpuSpecService;
+import com.cmcorg.service.takeaway.product.util.TakeawayCacheHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,10 +43,6 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
     TakeawaySpuRefCategoryService takeawaySpuRefCategoryService;
     @Resource
     TakeawaySpuSpecService takeawaySpuSpecService;
-    @Resource
-    TakeawayCategoryService takeawayCategoryService;
-    @Resource
-    TakeawaySkuMapper takeawaySkuMapper;
 
     /**
      * 新增/修改
@@ -191,9 +184,9 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
     @Override
     public List<TakeawayCategoryDO> userProduct(TakeawaySpuUserProductDTO dto) {
 
-        // 查询所有关联了 spu的，分类 idSet以及 spuIdSet
         // 查询对应的分类
         // 查询对应的 spu
+        // 查询所有关联了 spu的，分类 idSet以及 spuIdSet
         // 组装
 
         TakeawayRedisKeyEnum takeawayRedisKeyEnum;
@@ -206,47 +199,36 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
 
         return MyCacheUtil.getListCache(takeawayRedisKeyEnum, MyCacheUtil.getDefaultResultList(), () -> {
 
-            List<TakeawaySpuRefCategoryDO> takeawaySpuRefCategoryDOList = MyCacheUtil
-                .getListCache(TakeawayRedisKeyEnum.TAKEAWAY_SPU_REF_CATEGORY_CACHE, MyCacheUtil.getDefaultResultList(),
-                    () -> takeawaySpuRefCategoryService.lambdaQuery()
-                        .select(TakeawaySpuRefCategoryDO::getSpuId, TakeawaySpuRefCategoryDO::getCategoryId).list());
+            List<TakeawayCategoryDO> takeawayCategoryDOList =
+                TakeawayCacheHelper.getCategoryList().stream().filter(it -> it.getScene().equals(dto.getScene()))
+                    .collect(Collectors.toList());
+
+            Set<Long> categoryIdSet =
+                takeawayCategoryDOList.stream().map(BaseEntity::getId).collect(Collectors.toSet());
+
+            List<TakeawaySpuRefCategoryDO> takeawaySpuRefCategoryDOList =
+                TakeawayCacheHelper.getSpuRefCategoryList().stream()
+                    .filter(it -> categoryIdSet.contains(it.getCategoryId())).collect(Collectors.toList());
 
             Set<Long> spuIdSet = new HashSet<>();
-            Set<Long> categoryIdSet = new HashSet<>();
-            Map<Long, Set<Long>> categoryRefSpuMap = MapUtil.newHashMap();
+            Map<Long, Set<Long>> categoryRefSpuMap = MapUtil.newHashMap(categoryIdSet.size());
 
             for (TakeawaySpuRefCategoryDO item : takeawaySpuRefCategoryDOList) {
                 spuIdSet.add(item.getSpuId());
                 categoryIdSet.add(item.getCategoryId());
-                Set<Long> refSpuIdSet = categoryRefSpuMap.get(item.getCategoryId());
-                if (refSpuIdSet == null) {
-                    refSpuIdSet = CollUtil.newHashSet();
-                    categoryRefSpuMap.put(item.getCategoryId(), refSpuIdSet);
-                }
+                Set<Long> refSpuIdSet = categoryRefSpuMap.computeIfAbsent(item.getCategoryId(), k -> new HashSet<>());
                 refSpuIdSet.add(item.getSpuId());
             }
 
-            List<TakeawayCategoryDO> takeawayCategoryDOList = MyCacheUtil
-                .getListCache(TakeawayRedisKeyEnum.TAKEAWAY_CATEGORY_CACHE, MyCacheUtil.getDefaultResultList(),
-                    () -> takeawayCategoryService.lambdaQuery().select(BaseEntity::getId, TakeawayCategoryDO::getName)
-                        .eq(BaseEntityNoId::getEnableFlag, true).in(BaseEntity::getId, categoryIdSet)
-                        .eq(TakeawayCategoryDO::getScene, dto.getScene()).orderByDesc(TakeawayCategoryDO::getOrderNo)
-                        .list());
+            Map<Long, TakeawaySpuDO> spuMap =
+                TakeawayCacheHelper.getSpuList().stream().filter(it -> spuIdSet.contains(it.getId()))
+                    .collect(Collectors.toMap(BaseEntity::getId, it -> it));
 
-            Map<Long, TakeawaySpuDO> spuMap = MyCacheUtil
-                .getMapCache(TakeawayRedisKeyEnum.TAKEAWAY_SPU_MAP_CACHE, MyCacheUtil.getDefaultLongTMap(),
-                    () -> lambdaQuery().select(BaseEntity::getId, TakeawaySpuDO::getName, TakeawaySpuDO::getMustFlag)
-                        .eq(BaseEntityNoId::getEnableFlag, true).in(BaseEntity::getId, spuIdSet)
-                        .eq(TakeawaySpuDO::getScene, dto.getScene()).orderByDesc(TakeawaySpuDO::getOrderNo).list()
-                        .stream().collect(Collectors.toMap(BaseEntity::getId, it -> it)));
+            Map<Long, List<TakeawaySkuDO>> spuIdSkuListMap =
+                TakeawayCacheHelper.getSkuList().stream().filter(it -> spuIdSet.contains(it.getId())).collect(
+                    Collectors.groupingBy(TakeawaySkuDO::getSpuId, Collectors.mapping(it -> it, Collectors.toList())));
 
-            Map<Long, List<TakeawaySkuDO>> splIdSkuListMap = MyCacheUtil
-                .getMapCache(TakeawayRedisKeyEnum.TAKEAWAY_SPU_ID_SKU_LIST_MAP_CACHE, MyCacheUtil.getDefaultLongTMap(),
-                    () -> ChainWrappers.lambdaQueryChain(takeawaySkuMapper).eq(BaseEntityNoId::getEnableFlag, true)
-                        .in(TakeawaySkuDO::getSpuId, spuIdSet).eq(BaseEntityNoId::getEnableFlag, true).list().stream()
-                        .collect(Collectors
-                            .groupingBy(TakeawaySkuDO::getSpuId, Collectors.mapping(it -> it, Collectors.toList()))));
-
+            // 组装数据
             for (TakeawayCategoryDO item : takeawayCategoryDOList) {
                 Set<Long> refSpuIdSet = categoryRefSpuMap.get(item.getId());
                 if (CollUtil.isNotEmpty(refSpuIdSet)) {
@@ -254,7 +236,7 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
                     for (Long subItem : refSpuIdSet) {
                         TakeawaySpuDO takeawaySpuDO = spuMap.get(subItem);
                         if (takeawaySpuDO != null) {
-                            takeawaySpuDO.setTakeawaySkuDOList(splIdSkuListMap.get(takeawaySpuDO.getId())); // 设置：sku集合
+                            takeawaySpuDO.setTakeawaySkuDOList(spuIdSkuListMap.get(takeawaySpuDO.getId())); // 设置：sku集合
                             refTakeawaySpuDOList.add(takeawaySpuDO);
                         }
                     }

@@ -16,19 +16,17 @@ public enum TakeawayCanalKafkaHandlerKeyEnum implements ICanalKafkaHandlerKey {
 
     // sku表
     TAKEAWAY_SKU("takeaway_sku", CollUtil.newHashSet(TakeawayRedisKeyEnum.TAKEAWAY_SPU_USER_PRODUCT_DINNER_CACHE,
-        TakeawayRedisKeyEnum.TAKEAWAY_SPU_USER_PRODUCT_TAKEAWAY_CACHE,
-        TakeawayRedisKeyEnum.TAKEAWAY_SPU_ID_SKU_LIST_MAP_CACHE)),
+        TakeawayRedisKeyEnum.TAKEAWAY_SPU_USER_PRODUCT_TAKEAWAY_CACHE, TakeawayRedisKeyEnum.TAKEAWAY_SKU_LIST_CACHE)),
 
     // spu表
     TAKEAWAY_SPU("takeaway_spu", CollUtil.newHashSet(TakeawayRedisKeyEnum.TAKEAWAY_SPU_USER_PRODUCT_DINNER_CACHE,
-        TakeawayRedisKeyEnum.TAKEAWAY_SPU_USER_PRODUCT_TAKEAWAY_CACHE,
-        TakeawayRedisKeyEnum.TAKEAWAY_SPU_ID_SKU_LIST_MAP_CACHE, TakeawayRedisKeyEnum.TAKEAWAY_SPU_MAP_CACHE,
-        TakeawayRedisKeyEnum.TAKEAWAY_SPU_REF_CATEGORY_CACHE)),
+        TakeawayRedisKeyEnum.TAKEAWAY_SPU_USER_PRODUCT_TAKEAWAY_CACHE, TakeawayRedisKeyEnum.TAKEAWAY_SKU_LIST_CACHE,
+        TakeawayRedisKeyEnum.TAKEAWAY_SPU_LIST_CACHE, TakeawayRedisKeyEnum.TAKEAWAY_SPU_REF_CATEGORY_LIST_CACHE)),
 
     // 分类表
     TAKEAWAY_SPEC("takeaway_spec", CollUtil.newHashSet(TakeawayRedisKeyEnum.TAKEAWAY_SPU_USER_PRODUCT_DINNER_CACHE,
-        TakeawayRedisKeyEnum.TAKEAWAY_SPU_USER_PRODUCT_TAKEAWAY_CACHE, TakeawayRedisKeyEnum.TAKEAWAY_CATEGORY_CACHE,
-        TakeawayRedisKeyEnum.TAKEAWAY_SPU_REF_CATEGORY_CACHE)),
+        TakeawayRedisKeyEnum.TAKEAWAY_SPU_USER_PRODUCT_TAKEAWAY_CACHE,
+        TakeawayRedisKeyEnum.TAKEAWAY_CATEGORY_LIST_CACHE, TakeawayRedisKeyEnum.TAKEAWAY_SPU_REF_CATEGORY_LIST_CACHE)),
 
     // spu，分类 关联表
     TAKEAWAY_SPU_REF_CATEGORY("takeaway_spu_ref_category",
