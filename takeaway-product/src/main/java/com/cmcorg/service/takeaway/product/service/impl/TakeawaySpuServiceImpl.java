@@ -225,7 +225,11 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
                     .collect(Collectors.toMap(BaseEntity::getId, it -> it));
 
             Map<Long, List<TakeawaySkuDO>> spuIdSkuListMap =
-                TakeawayCacheHelper.getSkuList().stream().filter(it -> spuIdSet.contains(it.getSpuId())).collect(
+                TakeawayCacheHelper.getSkuList().stream().filter(it -> spuIdSet.contains(it.getSpuId())).peek(it -> {
+                    it.setSpuSpecJsonList(
+                        JSONUtil.parseArray(it.getSpuSpecJsonListStr()).stream().map(JSONUtil::parseObj)
+                            .collect(Collectors.toList()));
+                }).collect(
                     Collectors.groupingBy(TakeawaySkuDO::getSpuId, Collectors.mapping(it -> it, Collectors.toList())));
 
             // 组装数据

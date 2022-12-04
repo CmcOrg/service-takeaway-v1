@@ -1,5 +1,6 @@
 package com.cmcorg.service.takeaway.product.model.entity;
 
+import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.cmcorg.engine.web.auth.model.entity.BaseEntity;
@@ -12,6 +13,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 @RequestClass(tableIgnoreFields = WebModelConstant.TABLE_IGNORE_FIELDS_TWO)
@@ -73,5 +75,10 @@ public class TakeawaySkuDO extends BaseEntity {
     @RequestField(formTitle = "规格参数", hideInSearchFlag = true)
     @Schema(description = "规格 json对象集合字符串，例如：[{}]，set")
     private Set<String> spuSpecJsonListStrSet;
+
+    @TableField(exist = false)
+    @RequestField(formTitle = "规格参数", hideInSearchFlag = true)
+    @Schema(description = "规格 json对象集合，例如：[{}]")
+    private List<JSONObject> spuSpecJsonList;
 
 }
