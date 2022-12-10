@@ -116,7 +116,7 @@ public class TakeawaySkuServiceImpl extends ServiceImpl<TakeawaySkuMapper, Takea
                 takeawaySpuDOList.stream().collect(Collectors.toMap(BaseEntity::getId, TakeawaySpuDO::getName));
 
             for (TakeawaySkuDO item : takeawaySkuDOPage.getRecords()) {
-                item.setSpuFullName(spuIdNameMap.get(item.getSpuId()));
+                item.setSpuName(spuIdNameMap.get(item.getSpuId()));
             }
 
         }

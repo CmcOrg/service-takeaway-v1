@@ -234,13 +234,13 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
                 TakeawayCacheHelper.getSkuList().stream().filter(it -> spuIdSet.contains(it.getSpuId())).peek(it -> {
 
                     // 设置：规格集合
-                    it.setSpuSpecJsonSet(JSONUtil.parseArray(it.getSpuSpecJsonListStr()).stream()
-                        .map(subIt -> BeanUtil.toBean(subIt, TakeawaySpecItemDTO.class)).collect(Collectors.toSet()));
+                    it.setSpuSpecJsonList(JSONUtil.parseArray(it.getSpuSpecJsonListStr()).stream()
+                        .map(subIt -> BeanUtil.toBean(subIt, TakeawaySpecItemDTO.class)).collect(Collectors.toList()));
 
                     // 设置：关联的规格主键 idSet
                     it.setSpecIdSet(spuIdRefCategoryIdSetMap.get(it.getSpuId()));
 
-                }).collect(
+                }).sorted(Comparator.comparing(TakeawaySkuDO::getSpuSpecJsonListStr)).collect(
                     Collectors.groupingBy(TakeawaySkuDO::getSpuId, Collectors.mapping(it -> it, Collectors.toList())));
 
             // 组装数据

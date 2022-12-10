@@ -13,6 +13,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 @RequestClass(tableIgnoreFields = WebModelConstant.TABLE_IGNORE_FIELDS_TWO)
@@ -68,7 +69,7 @@ public class TakeawaySkuDO extends BaseEntity {
 
     @TableField(exist = false)
     @Schema(description = "spu名称")
-    private String spuFullName;
+    private String spuName;
 
     @TableField(exist = false)
     @RequestField(formTitle = "规格参数", hideInSearchFlag = true)
@@ -78,7 +79,7 @@ public class TakeawaySkuDO extends BaseEntity {
     @TableField(exist = false)
     @RequestField(formTitle = "规格参数", hideInSearchFlag = true)
     @Schema(description = "规格 json对象集合，例如：[{}]")
-    private Set<TakeawaySpecItemDTO> spuSpecJsonSet;
+    private List<TakeawaySpecItemDTO> spuSpecJsonList;
 
     @TableField(exist = false)
     @RequestField(hideInSearchFlag = true)
