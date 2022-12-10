@@ -212,13 +212,18 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
                     .filter(it -> categoryIdSet.contains(it.getCategoryId())).collect(Collectors.toList());
 
             Set<Long> spuIdSet = new HashSet<>();
-            Map<Long, Set<Long>> categoryRefSpuMap = MapUtil.newHashMap(categoryIdSet.size());
+            Map<Long, Set<Long>> categoryIdRefSpuIdSetMap = MapUtil.newHashMap(categoryIdSet.size());
+            Map<Long, Set<Long>> spuIdRefCategoryIdSetMap = MapUtil.newHashMap();
 
             for (TakeawaySpuRefCategoryDO item : takeawaySpuRefCategoryDOList) {
                 spuIdSet.add(item.getSpuId());
                 categoryIdSet.add(item.getCategoryId());
-                Set<Long> refSpuIdSet = categoryRefSpuMap.computeIfAbsent(item.getCategoryId(), k -> new HashSet<>());
+                Set<Long> refSpuIdSet =
+                    categoryIdRefSpuIdSetMap.computeIfAbsent(item.getCategoryId(), k -> new HashSet<>());
                 refSpuIdSet.add(item.getSpuId());
+                Set<Long> refCategoryIdSet =
+                    spuIdRefCategoryIdSetMap.computeIfAbsent(item.getSpuId(), k -> new HashSet<>());
+                refCategoryIdSet.add(item.getCategoryId());
             }
 
             Map<Long, TakeawaySpuDO> spuMap =
@@ -226,15 +231,21 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
                     .collect(Collectors.toMap(BaseEntity::getId, it -> it));
 
             Map<Long, List<TakeawaySkuDO>> spuIdSkuListMap =
-                TakeawayCacheHelper.getSkuList().stream().filter(it -> spuIdSet.contains(it.getSpuId())).peek(it -> it
-                    .setSpuSpecJsonSet(JSONUtil.parseArray(it.getSpuSpecJsonListStr()).stream()
-                        .map(subIt -> BeanUtil.toBean(subIt, TakeawaySpecItemDTO.class)).collect(Collectors.toSet())))
-                    .collect(Collectors
-                        .groupingBy(TakeawaySkuDO::getSpuId, Collectors.mapping(it -> it, Collectors.toList())));
+                TakeawayCacheHelper.getSkuList().stream().filter(it -> spuIdSet.contains(it.getSpuId())).peek(it -> {
+
+                    // 设置：规格集合
+                    it.setSpuSpecJsonSet(JSONUtil.parseArray(it.getSpuSpecJsonListStr()).stream()
+                        .map(subIt -> BeanUtil.toBean(subIt, TakeawaySpecItemDTO.class)).collect(Collectors.toSet()));
+
+                    // 设置：关联的规格主键 idSet
+                    it.setSpecIdSet(spuIdRefCategoryIdSetMap.get(it.getSpuId()));
+
+                }).collect(
+                    Collectors.groupingBy(TakeawaySkuDO::getSpuId, Collectors.mapping(it -> it, Collectors.toList())));
 
             // 组装数据
             for (TakeawayCategoryDO item : takeawayCategoryDOList) {
-                Set<Long> refSpuIdSet = categoryRefSpuMap.get(item.getId());
+                Set<Long> refSpuIdSet = categoryIdRefSpuIdSetMap.get(item.getId());
                 if (CollUtil.isNotEmpty(refSpuIdSet)) {
                     List<TakeawaySpuDO> refTakeawaySpuDOList = new ArrayList<>(refSpuIdSet.size());
                     for (Long subItem : refSpuIdSet) {

@@ -80,4 +80,9 @@ public class TakeawaySkuDO extends BaseEntity {
     @Schema(description = "规格 json对象集合，例如：[{}]")
     private Set<TakeawaySpecItemDTO> spuSpecJsonSet;
 
+    @TableField(exist = false)
+    @RequestField(hideInSearchFlag = true)
+    @Schema(description = "关联的规格主键 idSet")
+    private Set<Long> specIdSet;
+
 }
