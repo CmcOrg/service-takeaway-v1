@@ -17,6 +17,7 @@ import com.cmcorg.engine.web.cache.util.MyCacheUtil;
 import com.cmcorg.engine.web.model.model.dto.NotEmptyIdSet;
 import com.cmcorg.engine.web.model.model.dto.NotNullId;
 import com.cmcorg.service.takeaway.product.mapper.TakeawaySpuMapper;
+import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpecItemDTO;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuInsertOrUpdateDTO;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuPageDTO;
 import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpuUserProductDTO;
@@ -225,12 +226,11 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
                     .collect(Collectors.toMap(BaseEntity::getId, it -> it));
 
             Map<Long, List<TakeawaySkuDO>> spuIdSkuListMap =
-                TakeawayCacheHelper.getSkuList().stream().filter(it -> spuIdSet.contains(it.getSpuId())).peek(it -> {
-                    it.setSpuSpecJsonList(
-                        JSONUtil.parseArray(it.getSpuSpecJsonListStr()).stream().map(JSONUtil::parseObj)
-                            .collect(Collectors.toList()));
-                }).collect(
-                    Collectors.groupingBy(TakeawaySkuDO::getSpuId, Collectors.mapping(it -> it, Collectors.toList())));
+                TakeawayCacheHelper.getSkuList().stream().filter(it -> spuIdSet.contains(it.getSpuId())).peek(it -> it
+                    .setSpuSpecJsonSet(JSONUtil.parseArray(it.getSpuSpecJsonListStr()).stream()
+                        .map(subIt -> BeanUtil.toBean(subIt, TakeawaySpecItemDTO.class)).collect(Collectors.toSet())))
+                    .collect(Collectors
+                        .groupingBy(TakeawaySkuDO::getSpuId, Collectors.mapping(it -> it, Collectors.toList())));
 
             // 组装数据
             for (TakeawayCategoryDO item : takeawayCategoryDOList) {

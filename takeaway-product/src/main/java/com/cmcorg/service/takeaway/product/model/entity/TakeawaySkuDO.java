@@ -1,19 +1,18 @@
 package com.cmcorg.service.takeaway.product.model.entity;
 
-import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.cmcorg.engine.web.auth.model.entity.BaseEntity;
 import com.cmcorg.engine.web.model.generate.model.annotation.RequestClass;
 import com.cmcorg.engine.web.model.generate.model.annotation.RequestField;
 import com.cmcorg.engine.web.model.generate.model.constant.WebModelConstant;
+import com.cmcorg.service.takeaway.product.model.dto.TakeawaySpecItemDTO;
 import com.cmcorg.service.takeaway.product.model.enums.TakeawaySceneEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Set;
 
 @RequestClass(tableIgnoreFields = WebModelConstant.TABLE_IGNORE_FIELDS_TWO)
@@ -79,6 +78,6 @@ public class TakeawaySkuDO extends BaseEntity {
     @TableField(exist = false)
     @RequestField(formTitle = "规格参数", hideInSearchFlag = true)
     @Schema(description = "规格 json对象集合，例如：[{}]")
-    private List<JSONObject> spuSpecJsonList;
+    private Set<TakeawaySpecItemDTO> spuSpecJsonSet;
 
 }
