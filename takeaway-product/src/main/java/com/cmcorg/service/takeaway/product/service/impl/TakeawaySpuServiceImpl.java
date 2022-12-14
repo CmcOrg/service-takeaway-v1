@@ -240,6 +240,12 @@ public class TakeawaySpuServiceImpl extends ServiceImpl<TakeawaySpuMapper, Takea
                     // 设置：关联的规格主键 idSet
                     it.setSpecIdSet(spuIdRefCategoryIdSetMap.get(it.getSpuId()));
 
+                    // 设置：spu名称
+                    TakeawaySpuDO takeawaySpuDO = spuMap.get(it.getSpuId());
+                    if (takeawaySpuDO != null) {
+                        it.setSpuName(takeawaySpuDO.getName());
+                    }
+
                 }).sorted(Comparator.comparing(TakeawaySkuDO::getSpuSpecJsonListStr)).collect(
                     Collectors.groupingBy(TakeawaySkuDO::getSpuId, Collectors.mapping(it -> it, Collectors.toList())));
 
